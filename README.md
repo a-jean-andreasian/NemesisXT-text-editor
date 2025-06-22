@@ -1,7 +1,5 @@
 # Nemesis XT 
 
-![logo](src/assets/demo/nemesis.png)
-
 ---
 # Contents
 
@@ -11,6 +9,8 @@
 - [Screenshots](#screenshots)
 - [Installation](#installation)
 
+---
+![window_logo.png](src/assets/logos/window_logo.png)
 
 ---
 # Introduction
