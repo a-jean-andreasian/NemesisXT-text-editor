@@ -1,6 +1,6 @@
 # Nemesis XT 
 
-![logo](assets/demo/nemesis.png)
+![logo](src/assets/demo/nemesis.png)
 
 ---
 # Contents
@@ -41,7 +41,7 @@ Nemesis XT comes with a variety of themes to suit your preferences:
 # Screenshots
 
 ### Atom Theme:
-![screenshot](assets/demo/screenshot.png)
+![screenshot](src/assets/demo/screenshot.png)
 
 
 ---

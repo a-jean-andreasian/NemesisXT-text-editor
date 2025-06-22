@@ -1,4 +1,4 @@
-from abstractions.abssettings import AbsSettings
+from src.abstractions.abssettings import AbsSettings
 from dataclasses import dataclass, field
 
 

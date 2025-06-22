@@ -6,8 +6,7 @@ from src.modules.gui.fonts.gui_font_settings import FontSettings
 from src.modules.file_managment.file_manager import FileManager
 from src.modules.gui.keyboard.gui_keyboard_settings import Keyboard
 
-from config.paths import AssetsFilePaths, UserSettingsFilePaths
-from config.user import UserSettings
+from src.config.paths import AssetsFilePaths
 import json
 
 

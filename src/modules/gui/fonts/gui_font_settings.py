@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import font
-import json
-from config.paths import UserSettingsFilePaths
-from config.user import UserSettings
+from src.config.paths import UserSettingsFilePaths
+from src.config.user import UserSettings
 
 
 class FontSettings:
