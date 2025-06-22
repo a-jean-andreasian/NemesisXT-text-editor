@@ -31,7 +31,7 @@ class UserSettings(AbsSettings):
             with self.lock:
                 settings_from_file: dict = JsonUtils.load_json(self.settings_file)
 
-                if settings_from_file is None:
+                if not settings_from_file:
                     self.settings = UserSettingsData()
                     self.save_settings()
 
