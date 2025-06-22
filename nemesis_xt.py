@@ -7,5 +7,8 @@ class TextEditorMain(TextEditor):
 
 
 if __name__ == '__main__':
-    app = TextEditorMain()
-    app.run()
+    try:
+        app = TextEditorMain()
+        app.run()
+    except KeyboardInterrupt:
+        exit(1)
