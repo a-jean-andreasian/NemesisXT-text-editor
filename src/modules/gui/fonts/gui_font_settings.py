@@ -1,17 +1,18 @@
 import tkinter as tk
 from tkinter import font
 import json
-
-from files.config import FilePaths
+from config.paths import UserSettingsFilePaths
+from config.user import UserSettings
 
 
 class FontSettings:
-    __SETTINGS_FILE_FILEPATH = FilePaths().settings_filepath
-
     def __init__(self, text: tk.Text):
         self.text = text
-        self.font_size = self.__load_font_details()["default-settings"]["font_size"]
+        self.user_settings: UserSettings = UserSettings(settings_file=UserSettingsFilePaths.USER_CONFIG_FILEPATH)
 
+        self.font_size = self.user_settings.settings.font_size
+
+        # Add a binding to change the font size with Ctrl + Mouse Wheel
         self.text.bind("<Control-MouseWheel>", self.change_font_size)
 
         # Get the initial font information
@@ -20,16 +21,7 @@ class FontSettings:
         # Create a separate font configuration to control the size
         self.font_size = font_info.actual()["size"]
         self.text_font = font.nametofont(text.cget("font"))
-
-
-    def __load_font_details(self):
-        """
-        Retrieves the font details from config file.
-        """
-        with open(self.__SETTINGS_FILE_FILEPATH) as settings_file:
-            settings = json.load(settings_file)
-            return settings
-
+        self.user_config = UserSettingsFilePaths.USER_CONFIG_FILEPATH
 
     def change_font_size(self, event):
         if event.delta > 0:
@@ -47,22 +39,5 @@ class FontSettings:
         # Saving user's choice
         self.save_user_font()
 
-
     def save_user_font(self):
-        settings = {
-            "default-settings": {
-                "font_size": self.font_size,
-            }
-        }
-
-        with open(self.__SETTINGS_FILE_FILEPATH, 'w') as settings_file:
-            json.dump(settings, settings_file)
-
-
-    @property
-    def get_font_size(self):
-        return self.font_size
-
-    @property
-    def get_font_family(self):
-        pass
+        self.user_settings.update_settings('font_size', self.font_size)

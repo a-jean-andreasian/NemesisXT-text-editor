@@ -1,6 +1,6 @@
 # Nemesis XT 
 
-![logo](files/nemesis.png)
+![logo](assets/demo/nemesis.png)
 
 Demo:
-![screenshot](files/screenshot.png)
+![screenshot](assets/demo/screenshot.png)

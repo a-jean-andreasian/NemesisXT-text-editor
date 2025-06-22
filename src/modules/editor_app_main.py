@@ -1,17 +1,14 @@
 import tkinter as tk
-import json
-
 from src.modules.gui.themes.theme_manager import ThemeManager
-
 from src.modules.gui.functional import StandAloneFunctions
+
 from src.modules.gui.fonts.gui_font_settings import FontSettings
-
 from src.modules.file_managment.file_manager import FileManager
-
-
 from src.modules.gui.keyboard.gui_keyboard_settings import Keyboard
 
-from files.config import FilePaths
+from config.paths import AssetsFilePaths, UserSettingsFilePaths
+from config.user import UserSettings
+import json
 
 
 class TextEditor:
@@ -30,8 +27,8 @@ class TextEditor:
     Methods:
         __init__(self, filepath_=None): Initializes the TextEditor instance.
     """
-    __THEMES_FILEPATH = FilePaths().themes_filepath
-    __LOGO_FILEPATH = FilePaths().logo_filepath
+    __THEMES_FILEPATH = AssetsFilePaths.THEMES_FILEPATH
+    __LOGO_FILEPATH = AssetsFilePaths.ICO_LOGO_FILEPATH
 
     def __init__(self):
         # loading themes
