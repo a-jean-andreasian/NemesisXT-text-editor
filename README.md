@@ -8,6 +8,8 @@
 - [Themes](#themes)
 - [Screenshots](#screenshots)
 - [Installation](#installation)
+- [License](#license)
+- [Contact](#contact)
 
 ---
 ![window_logo.png](src/assets/logos/window_logo.png)
@@ -53,3 +55,22 @@ To install Nemesis XT, follow these steps:
 - Click on the latest release (most top).
 - Scroll down to the "Assets" section.
 - Click on `Nemesis XT.zip` to download the file.
+
+---
+# License
+Nemesis XT is released under a Source Available License.
+
+- ✅ Free to use personally and internally
+- ❌ No modifications or forks allowed
+- ❌ No redistribution or commercial offerings allowed
+
+See the LICENSE file for full terms.
+
+---
+# Contact
+
+For any questions or feedback, please contact:
+- [**GitHub**](https://github.com/a-jean-andreasian)
+- [**LinkedIn**](https://www.linkedin.com/in/armen-jean-andreasian/)
+
+---

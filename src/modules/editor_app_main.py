@@ -4,7 +4,7 @@ from src.modules.gui.functional import StandAloneFunctions
 
 from src.modules.gui.fonts.gui_font_settings import FontSettings
 from src.modules.file_managment.file_manager import FileManager
-from src.modules.gui.keyboard.gui_keyboard_settings import Keyboard
+from src.modules.gui.keyboard.hotkeys import KeyboardHotkeys
 
 from src.config.paths import AssetsFilePaths
 import json
@@ -53,7 +53,7 @@ class TextEditor:
         file_manager = FileManager(text=self.text, root=self.root)
         text_settings = StandAloneFunctions(text=self.text)
         font_settings = FontSettings(text=self.text)
-        keyboard_settings = Keyboard(text=self.text)
+        keyboard_settings = KeyboardHotkeys(text=self.text)
 
         # hotkeys
         self.text.bind("<Tab>", keyboard_settings.tab_forward)  # Bind the Tab key press event to insert 4 spaces
@@ -88,8 +88,3 @@ class TextEditor:
 
         # exit
         self.root.protocol(name="WM_DELETE_WINDOW", func=file_manager.on_closing)
-
-
-if __name__ == '__main__':
-    app = TextEditor()
-    app.root.mainloop()

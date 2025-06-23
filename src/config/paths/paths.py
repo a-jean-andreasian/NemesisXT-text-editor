@@ -12,3 +12,4 @@ class AssetsFilePaths:
 
 class UserSettingsFilePaths:
     USER_CONFIG_FILEPATH = os.path.join(BASE_DIR, "config", "user", "user_config.json")
+    USER_HOTKEYS_FILEPATH = os.path.join(BASE_DIR, "config", "user", "user_hotkeys.json")
