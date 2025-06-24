@@ -1,3 +1,8 @@
+APP_NAME = "Nemesis XT"
+APP_DESCRIPTION = "A modern, minimalist, customizable, lightweight text editor suitable for both personal and professional use."
+APP_VERSION = "1.1.0"
+
+
 class AvailableFonts:
     @staticmethod
     def get() -> tuple:

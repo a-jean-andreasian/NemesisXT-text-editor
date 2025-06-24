@@ -2,3 +2,8 @@
 .git/
 __pycache__/
 *.pyc
+/app.spec
+/build/
+/dist/
+*.iss
+*.spec

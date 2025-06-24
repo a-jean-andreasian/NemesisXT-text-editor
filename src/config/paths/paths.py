@@ -1,15 +1,20 @@
 import os
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-print('base dir:', BASE_DIR)
+
+"""
+Module for managing file paths used in the application.
+
+Path are defined relative to the base directory of the application.
+Based on the environment variables, the paths can be overridden.
+- This we need to pack the application with PyInstaller. `config_spreader.py` will copy json files to the correct location based on the OS.
+- Then it will set the environment variables to point to the correct paths.
+"""
 
 
-class AssetsFilePaths:
-    THEMES_FILEPATH = os.path.join(BASE_DIR, "config", "app", "themes.json")
-    ICO_LOGO_FILEPATH = os.path.join(BASE_DIR, "assets", "logos", "window_logo.ico")
-    PNG_LOGO_FILEPATH = os.path.join(BASE_DIR, "assets", "logos", "window_logo.png")
+class FilePaths:
+    ICO_LOGO_FILEPATH = None
 
-
-class UserSettingsFilePaths:
-    USER_CONFIG_FILEPATH = os.path.join(BASE_DIR, "config", "user", "user_config.json")
-    USER_HOTKEYS_FILEPATH = os.path.join(BASE_DIR, "config", "user", "user_hotkeys.json")
+    USER_CONFIG_FILEPATH = None  # config_spreader.py will set this path
+    USER_HOTKEYS_FILEPATH = None  # TODO: implement this
+    THEMES_FILEPATH = None  # config_spreader.py will set this path

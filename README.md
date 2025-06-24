@@ -17,12 +17,7 @@
 ---
 # Introduction
 
-Nemesis XT is a modern, responsive, and customizable theme for any purpose. 
-
-It is designed to be lightweight and fast, making it suitable for both personal and professional use. 
-
-It is designed for anyone who values a versatile and efficient text editing experience. 
-
+Nemesis XT is a modern, minimalist, customizable, lightweight text editor suitable for both personal and professional use.
 
 ---
 # Features

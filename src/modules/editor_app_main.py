@@ -5,9 +5,11 @@ from src.modules.gui.functional import StandAloneFunctions
 from src.modules.gui.fonts.gui_font_settings import FontSettings
 from src.modules.file_managment.file_manager import FileManager
 from src.modules.gui.keyboard.hotkeys import KeyboardHotkeys
-
-from src.config.paths import AssetsFilePaths
 import json
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.config.paths import FilePaths
 
 
 class TextEditor:
@@ -15,9 +17,6 @@ class TextEditor:
     TextEditor is a simple text editor application built using the tkinter library.
 
     Attributes:
-        __THEMES_FILEPATH (str): The default path to the themes configuration file.
-        __LOGO_FILEPATH (str): The default path to logo.
-
         root (tkinter.Tk): The main application window.
         menu (tkinter.Menu): The menu bar for the application.
         text (tkinter.Text): The text editing widget.
@@ -26,18 +25,15 @@ class TextEditor:
     Methods:
         __init__(self, filepath_=None): Initializes the TextEditor instance.
     """
-    __THEMES_FILEPATH = AssetsFilePaths.THEMES_FILEPATH
-    __LOGO_FILEPATH = AssetsFilePaths.ICO_LOGO_FILEPATH
-
-    def __init__(self):
+    def __init__(self, filepaths_obj: "FilePaths"):
         # loading themes
-        with open(self.__THEMES_FILEPATH) as file:
+        with open(filepaths_obj.THEMES_FILEPATH) as file:
             self.themes = json.load(file)
 
         # defining the settings
         self.root = tk.Tk()
         self.root.title("Nemesis-XT")
-        self.root.iconbitmap(default=self.__LOGO_FILEPATH)
+        self.root.iconbitmap(default=filepaths_obj.ICO_LOGO_FILEPATH)
         self.root.geometry("800x600")  # Set your preferred initial window size
 
         # main menu

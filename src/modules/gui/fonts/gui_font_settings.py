@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import font
-from src.config.paths import UserSettingsFilePaths
+from src.config.paths import FilePaths
 from src.config.user import UserSettings
 
 
 class FontSettings:
     def __init__(self, text: tk.Text):
         self.text = text
-        self.user_settings: UserSettings = UserSettings(settings_file=UserSettingsFilePaths.USER_CONFIG_FILEPATH)
+        self.user_settings: UserSettings = UserSettings(settings_file=FilePaths.USER_CONFIG_FILEPATH)
 
         self.font_size = self.user_settings.settings.font_size
 
@@ -20,7 +20,7 @@ class FontSettings:
         # Create a separate font configuration to control the size
         self.font_size = font_info.actual()["size"]
         self.text_font = font.nametofont(text.cget("font"))
-        self.user_config = UserSettingsFilePaths.USER_CONFIG_FILEPATH
+        self.user_config = FilePaths.USER_CONFIG_FILEPATH
 
     def change_font_size(self, event):
         if event.delta > 0:
