@@ -52,6 +52,7 @@ jobs:
         with:
           tag_name: v${{ env.VERSION }}
           name: "Nemesis-XT - Text Editor v${{ env.VERSION }}"
+          body_path: .github/README.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,5 +61,8 @@ jobs:
         with:
           tag_name: v${{ env.VERSION }}
           files: dist/*
+          prerelease: false
+          make_latest: true
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
