@@ -50,6 +50,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code  # <-- MUST BE FIRST
+        uses: actions/checkout@v4
+  
       - name: Read app version
         id: version
         run: |
@@ -64,17 +67,11 @@ jobs:
             exit 1
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Checkout code
-        uses: actions/checkout@v4
   
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: downloads
-  
-      - name: Read app version
-        run: echo "VERSION=$(cat meta/VERSION)" >> $GITHUB_ENV
   
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -85,4 +82,5 @@ jobs:
           files: downloads/**/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
