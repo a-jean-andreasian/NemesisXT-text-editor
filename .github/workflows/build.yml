@@ -6,24 +6,56 @@ on:
 permissions:
   contents: write
 
+env:
+  DEFAULT_PYTHON_VERSION: 3.13.3
+  DEFAULT_APP_VERSION: 1.0.1
+
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest] #, macos-latest]
+        os: [ ubuntu-latest, windows-latest ] #, macos-latest]
+
+    outputs:
+      PYTHON_VERSION: ${{ steps.read_py.outputs.version }}
+      APP_VERSION: ${{ steps.get_app_version.outputs.version }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Read Python version from .python-version
-        run: echo "PY=$(cat meta/.python-version)" >> $GITHUB_ENV
+      - name: Read Python version
+        id: read_py
+        run: |
+          if [ -f meta/.python-version ] && [ -s meta/.python-version ]; then
+            PY=$(cat meta/.python-version | tr -d '\r')
+            echo "Using PY from file: $PY"
+          else
+            PY="${DEFAULT_PYTHON_VERSION}"
+            echo "WARNING: meta/.python-version missing or empty. Using fallback: $PY"
+          fi
+          echo "version=$PY" >> $GITHUB_OUTPUT
+
+      - name: Read app version
+        if: matrix.os == 'ubuntu-latest'
+        id: get_app_version
+        run: |
+          if [ -f meta/.app_version ] && [ -s meta/.app_version ]; then
+            APP_VERSION=$(cat meta/.app_version | tr -d '\r')
+            echo "Using APP_VERSION from file: $APP_VERSION"
+          else
+            APP_VERSION="${DEFAULT_APP_VERSION}"
+            echo "WARNING: meta/.app_version missing or empty. Using fallback: $APP_VERSION"
+          fi
+          echo "version=$APP_VERSION" >> $GITHUB_OUTPUT
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PY }}
+          python-version: ${{ steps.read_py.outputs.version }}
+
 
       - name: Install dependencies (Linux only)
         if: matrix.os == 'ubuntu-latest'
@@ -50,7 +82,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code  # This must be the FIRST step
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Download artifacts
@@ -58,37 +90,22 @@ jobs:
         with:
           path: downloads
 
-      - name: Read app version
-        id: version
-        run: |
-          echo "::group::Check meta/VERSION"
-          ls -l meta || true
-          cat meta/VERSION || echo "meta/VERSION missing"
-          echo "::endgroup::"
-          
-          VERSION=$(cat meta/VERSION)
-          if [ -z "$VERSION" ]; then
-            echo "VERSION file is empty or unreadable"
-            exit 1
-          fi
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ env.VERSION }}
-          name: "Nemesis-XT - Text Editor v${{ env.VERSION }}"
+          tag_name: v${{ needs.build.outputs.APP_VERSION }}
+          name: "Nemesis-XT - Text Editor v${{ needs.build.outputs.APP_VERSION }}"
           body_path: .github/README.md
           files: downloads/**/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Delete tag if release failed to avoid further failures due to "tag already exists"
+      - name: Delete tag if release failed
         if: failure()
         run: |
-          echo "Cleaning up tag v${{ env.VERSION }} due to failure..."
+          echo "Cleaning up tag v${{ needs.build.outputs.APP_VERSION }} due to failure..."
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           git clone --depth 1 https://github.com/${{ github.repository }} repo
           cd repo
-          git push origin :refs/tags/v${{ env.VERSION }}
+          git push origin :refs/tags/v${{ needs.build.outputs.APP_VERSION }}
