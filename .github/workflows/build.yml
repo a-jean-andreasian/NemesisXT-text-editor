@@ -45,25 +45,29 @@ jobs:
         with:
           name: gui-app-${{ matrix.os }}
           path: dist/*
-
+    
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: downloads
-
+  
       - name: Read app version
         run: echo "VERSION=$(cat meta/VERSION)" >> $GITHUB_ENV
-
+  
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION }}
           name: "Nemesis-XT - Text Editor v${{ env.VERSION }}"
           body_path: .github/README.md
-          files: downloads/**/*  # upload all platform binaries
+          files: downloads/**/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
