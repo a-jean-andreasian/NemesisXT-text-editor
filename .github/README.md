@@ -12,7 +12,7 @@
 - [Contact](#contact)
 
 ---
-![window_logo.png](src/assets/logos/window_logo.png)
+![window_logo.png](../src/assets/logos/window_logo.png)
 
 ---
 # Introduction
@@ -38,7 +38,7 @@ Nemesis XT comes with a variety of themes to suit your preferences:
 # Screenshots
 
 ### Atom Theme:
-![screenshot](src/assets/demo/screenshot.png)
+![screenshot](../src/assets/demo/screenshot.png)
 
 
 ---
