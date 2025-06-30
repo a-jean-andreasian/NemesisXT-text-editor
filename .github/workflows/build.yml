@@ -50,8 +50,13 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code  # <-- MUST BE FIRST
+      - name: Checkout code  # This must be the FIRST step
         uses: actions/checkout@v4
+  
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: downloads
   
       - name: Read app version
         id: version
@@ -60,18 +65,13 @@ jobs:
           ls -l meta || true
           cat meta/VERSION || echo "meta/VERSION missing"
           echo "::endgroup::"
-      
+  
           VERSION=$(cat meta/VERSION)
           if [ -z "$VERSION" ]; then
             echo "VERSION file is empty or unreadable"
             exit 1
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-  
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: downloads
   
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -82,5 +82,6 @@ jobs:
           files: downloads/**/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
 
 
