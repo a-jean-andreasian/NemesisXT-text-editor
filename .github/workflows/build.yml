@@ -50,13 +50,28 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code  # This must be the FIRST step
+        uses: actions/checkout@v4
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: downloads
 
       - name: Read app version
-        run: echo "VERSION=$(cat meta/VERSION)" >> $GITHUB_ENV
+        id: version
+        run: |
+          echo "::group::Check meta/VERSION"
+          ls -l meta || true
+          cat meta/VERSION || echo "meta/VERSION missing"
+          echo "::endgroup::"
+          
+          VERSION=$(cat meta/VERSION)
+          if [ -z "$VERSION" ]; then
+            echo "VERSION file is empty or unreadable"
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -64,6 +79,16 @@ jobs:
           tag_name: v${{ env.VERSION }}
           name: "Nemesis-XT - Text Editor v${{ env.VERSION }}"
           body_path: .github/README.md
-          files: downloads/**/*  # upload all platform binaries
+          files: downloads/**/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete tag if release failed to avoid further failures due to "tag already exists"
+        if: failure()
+        run: |
+          echo "Cleaning up tag v${{ env.VERSION }} due to failure..."
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git clone --depth 1 https://github.com/${{ github.repository }} repo
+          cd repo
+          git push origin :refs/tags/v${{ env.VERSION }}
