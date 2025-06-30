@@ -1,0 +1,1 @@
+from .hotkeys import KeyboardBindings

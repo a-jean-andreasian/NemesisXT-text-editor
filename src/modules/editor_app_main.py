@@ -2,9 +2,8 @@ import tkinter as tk
 from src.modules.gui.themes.theme_manager import ThemeManager
 from src.modules.gui.functional import StandAloneFunctions
 
-from src.modules.gui.fonts.gui_font_settings import FontSettings
 from src.modules.file_managment.file_manager import FileManager
-from src.modules.gui.keyboard.hotkeys import KeyboardHotkeys
+from src.modules.gui.keyboard.hotkeys import KeyboardBindings
 import json
 from typing import TYPE_CHECKING
 
@@ -41,26 +40,25 @@ class TextEditor:
         self.root.config(menu=self.menu)
 
         # editor widget
-        self.text = tk.Text(self.root)
+        self.text = tk.Text(self.root, undo=True, maxundo=-1, autoseparators=True)
         self.text.pack(fill="both", expand=True)  # full-size
 
         # initialization of subclasses
         theme_manager = ThemeManager(themes=self.themes, text=self.text)
         file_manager = FileManager(text=self.text, root=self.root)
         text_settings = StandAloneFunctions(text=self.text)
-        font_settings = FontSettings(text=self.text)
-        keyboard_settings = KeyboardHotkeys(text=self.text)
+        #font_settings = FontSettings(text=self.text)
+        keyboard_bindings = KeyboardBindings(text=self.text, file_manager=file_manager).bindings
 
         # hotkeys
-        self.text.bind("<Tab>", keyboard_settings.tab_forward)  # Bind the Tab key press event to insert 4 spaces
-        self.text.bind("<Shift-Tab>", keyboard_settings.tab_backward)  # Bind the Tab key press event to insert 4 spaces
-        self.text.bind("<Control-MouseWheel>", font_settings.change_font_size)  # Font size adjustment Ctrl + Wheel
+        for keyboard_binding in keyboard_bindings:
+            self.text.bind(sequence=keyboard_binding.key_combination, func=keyboard_binding.action, add=None)
 
         # File tab
         self.file_menu = tk.Menu(self.menu, tearoff=False)
         self.menu.add_cascade(label="File", menu=self.file_menu)
         self.file_menu.add_command(label="Open", command=file_manager.open_file)
-        self.file_menu.add_command(label="Save", command=file_manager.save_file)
+        self.file_menu.add_command(label="Save", command=file_manager.save_file_as)
         self.file_menu.add_command(label="Exit", command=file_manager.on_closing)
 
         # Edit tab

@@ -2,7 +2,7 @@ import tkinter as tk
 
 
 # Tabulation functionality for the text editor
-class Tabulation:
+class TabLogic:
     def __init__(self, text: tk.Text):
         self.text = text
 

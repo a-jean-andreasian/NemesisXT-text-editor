@@ -11,16 +11,12 @@ class FontSettings:
 
         self.font_size = self.user_settings.settings.font_size
 
-        # Add a binding to change the font size with Ctrl + Mouse Wheel
-        self.text.bind("<Control-MouseWheel>", self.change_font_size)
-
         # Get the initial font information
         font_info = font.nametofont(text.cget("font"))
 
         # Create a separate font configuration to control the size
         self.font_size = font_info.actual()["size"]
         self.text_font = font.nametofont(text.cget("font"))
-        self.user_config = FilePaths.USER_CONFIG_FILEPATH
 
     def change_font_size(self, event):
         if event.delta > 0:

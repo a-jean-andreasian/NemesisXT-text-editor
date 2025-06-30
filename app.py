@@ -2,19 +2,14 @@ from src.modules.editor_app_main import TextEditor
 from src.dist import ConfigSpreader
 from threading import Lock
 
-
-class TextEditorMain(TextEditor):
-    def run(self):
-        self.root.mainloop()
-
+lock = Lock()
 
 if __name__ == '__main__':
-    lock = Lock()
     try:
         with lock:
             c = ConfigSpreader()
             filepaths_obj = c.copy_configs()
-        app = TextEditorMain(filepaths_obj)
-        app.run()
+        app = TextEditor(filepaths_obj)
+        app.root.mainloop()
     except KeyboardInterrupt:
         exit(1)
