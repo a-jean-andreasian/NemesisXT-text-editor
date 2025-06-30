@@ -47,22 +47,13 @@ jobs:
         id: version
         run: echo "VERSION=$(cat meta/VERSION)" >> $GITHUB_ENV
 
-      - name: Create GitHub release
+      - name: Create GitHub release with binary
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION }}
           name: "Nemesis-XT - Text Editor v${{ env.VERSION }}"
           body_path: .github/README.md
+          files: dist/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload binary to release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ env.VERSION }}
-          files: dist/*
-          prerelease: false
-          make_latest: true
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
