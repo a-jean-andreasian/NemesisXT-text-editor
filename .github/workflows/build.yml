@@ -8,14 +8,16 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Read Python version from .python-version
-        id: python-version
         run: echo "PY=$(cat meta/.python-version)" >> $GITHUB_ENV
 
       - name: Set up Python
@@ -23,7 +25,8 @@ jobs:
         with:
           python-version: ${{ env.PY }}
 
-      - name: Install OS packages for tkinter
+      - name: Install dependencies (Linux only)
+        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-tk
@@ -40,20 +43,27 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gui-app
+          name: gui-app-${{ matrix.os }}
           path: dist/*
 
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: downloads
+
       - name: Read app version
-        id: version
         run: echo "VERSION=$(cat meta/VERSION)" >> $GITHUB_ENV
 
-      - name: Create GitHub release with binary
+      - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION }}
           name: "Nemesis-XT - Text Editor v${{ env.VERSION }}"
           body_path: .github/README.md
-          files: dist/*.exe
+          files: downloads/**/*  # upload all platform binaries
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
