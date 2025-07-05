@@ -13,31 +13,6 @@ if TYPE_CHECKING:
     from src.abstractions.initial_content import InitialContent
 
 
-class MetaProgrammer:
-    def __init__(self):
-        self.object = FilePaths
-
-
-    def update_content_class(self, file_name: str, file_path: str):
-        """
-        Updates the file name and content of the initial content class.
-        """
-        if file_name == "user_config.json":
-            self.object.USER_CONFIG_FILEPATH = file_path
-        elif file_name == "user_hotkeys.json":
-            self.object.USER_HOTKEYS_FILEPATH = file_path
-        elif file_name == "themes.json":
-            self.object.THEMES_FILEPATH = file_path
-        elif file_name == "icon.png":
-            self.object.ICO_LOGO_FILEPATH = file_path
-        return
-
-    @property
-    def obj(self):
-        return self.object
-
-
-
 class ConfigSpreader:
     def __init__(self):
         self.app_name = copy.copy(APP_NAME).replace(" ", "_").lower() + APP_VERSION
@@ -46,9 +21,6 @@ class ConfigSpreader:
             InitialUserConfig,
             Icon
         ]
-        self.meta_programmer = MetaProgrammer()
-
-
 
     def get_base_directory(self, app_name) -> str:
         system = platform.system()
@@ -106,8 +78,7 @@ class ConfigSpreader:
 
             # Updating the FilePaths module with the new paths
             print(f"Updating content class for FilePaths {entity.file_name} at {file_path}")
-            self.meta_programmer.update_content_class(file_name=entity.file_name, file_path=file_path)
+            FilePaths.update_config_path(file_name=entity.file_name, file_path=file_path)
 
         print(f"Configuration files copied to: {config_dir}")
-        return self.meta_programmer.obj
-
+        return FilePaths

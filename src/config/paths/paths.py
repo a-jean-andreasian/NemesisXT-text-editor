@@ -2,19 +2,29 @@ import os
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
-"""
-Module for managing file paths used in the application.
-
-Path are defined relative to the base directory of the application.
-Based on the environment variables, the paths can be overridden.
-- This we need to pack the application with PyInstaller. `config_spreader.py` will copy json files to the correct location based on the OS.
-- Then it will set the environment variables to point to the correct paths.
-"""
-
 
 class FilePaths:
-    ICO_LOGO_FILEPATH = None
+    ICON_ICON_FILEPATH = None
+    ICON_PNG_FILEPATH = None
+    THEMES_FILEPATH = None
 
-    USER_CONFIG_FILEPATH = None  # config_spreader.py will set this path
-    USER_HOTKEYS_FILEPATH = None  # TODO: implement this
-    THEMES_FILEPATH = None  # config_spreader.py will set this path
+    USER_CONFIG_FILEPATH = None
+    USER_HOTKEYS_FILEPATH = None
+
+    _bindings = {
+        "icon.ico": "ICON_ICON_FILEPATH",
+        "icon.png": "ICON_PNG_FILEPATH",
+        "themes.json": "THEMES_FILEPATH",
+        "user_config.json": "USER_CONFIG_FILEPATH",
+        "user_hotkeys.json": "USER_HOTKEYS_FILEPATH",
+    }
+
+    @classmethod
+    def update_config_path(cls, file_name: str, file_path: str) -> type["FilePaths"]:
+        if file_name in cls._bindings:
+            attr_name = cls._bindings[file_name]
+            setattr(cls, attr_name, file_path)
+        else:
+            raise ValueError(f"File name '{file_name}' is not a valid attribute of FilePaths.")
+
+        return cls

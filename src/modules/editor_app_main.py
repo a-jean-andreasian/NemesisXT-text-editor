@@ -1,10 +1,8 @@
 import tkinter as tk
 from src.modules.gui.themes.theme_manager import ThemeManager
 from src.modules.gui.functional import StandAloneFunctions
-
 from src.modules.file_managment.file_manager import FileManager
 from src.modules.gui.keyboard.hotkeys import KeyboardBindings
-import json
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -19,20 +17,17 @@ class TextEditor:
         root (tkinter.Tk): The main application window.
         menu (tkinter.Menu): The menu bar for the application.
         text (tkinter.Text): The text editing widget.
-        themes (dict): A dictionary containing color themes for the text editor.
 
     Methods:
         __init__(self, filepath_=None): Initializes the TextEditor instance.
     """
-    def __init__(self, filepaths_obj: "FilePaths"):
-        # loading themes
-        with open(filepaths_obj.THEMES_FILEPATH) as file:
-            self.themes = json.load(file)
 
+    def __init__(self, filepaths_obj: "FilePaths"):
         # defining the settings
         self.root = tk.Tk()
         self.root.title("Nemesis-XT")
-        self.root.iconbitmap(default=filepaths_obj.ICO_LOGO_FILEPATH)
+        # self.root.attributes('-transparentcolor', 'white')
+        self.root.iconbitmap(default=filepaths_obj.ICON_PNG_FILEPATH)
         self.root.geometry("800x600")  # Set your preferred initial window size
 
         # main menu
@@ -44,10 +39,10 @@ class TextEditor:
         self.text.pack(fill="both", expand=True)  # full-size
 
         # initialization of subclasses
-        theme_manager = ThemeManager(themes=self.themes, text=self.text)
+        theme_manager = ThemeManager(themes_filepath=filepaths_obj.THEMES_FILEPATH)
         file_manager = FileManager(text=self.text, root=self.root)
         text_settings = StandAloneFunctions(text=self.text)
-        #font_settings = FontSettings(text=self.text)
+        # font_settings = FontSettings(text=self.text)
         keyboard_bindings = KeyboardBindings(text=self.text, file_manager=file_manager).bindings
 
         # hotkeys
@@ -69,12 +64,15 @@ class TextEditor:
         # Themes tab
         self.themes_menu = tk.Menu(self.menu, tearoff=False)
         self.menu.add_cascade(label="Themes", menu=self.themes_menu)
-        self.themes_menu.add_command(label="Atom", command=lambda: theme_manager.set_theme(chosen_theme='atom'))
+        self.themes_menu.add_command(label="Atom",
+                                     command=lambda: theme_manager.set_theme(chosen_theme='atom', text=self.text))
         self.themes_menu.add_command(label="Sublime-Text",
-                                     command=lambda: theme_manager.set_theme(chosen_theme='sublime-text'))
+                                     command=lambda: theme_manager.set_theme(chosen_theme='sublime-text',
+                                                                             text=self.text))
         self.themes_menu.add_command(label="Black & White",
-                                     command=lambda: theme_manager.set_theme(chosen_theme='black'))
-        self.themes_menu.add_command(label="Light", command=lambda: theme_manager.set_theme(chosen_theme='light'))
+                                     command=lambda: theme_manager.set_theme(chosen_theme='black', text=self.text))
+        self.themes_menu.add_command(label="Light",
+                                     command=lambda: theme_manager.set_theme(chosen_theme='light', text=self.text))
 
         # Settings tab
         self.settings_menu = tk.Menu(self.menu, tearoff=False)
