@@ -15,7 +15,6 @@ VSVersionInfo(
         '040904B0',
         [
         StringStruct('Name', 'Nemesis-XT'),
-        StringStruct('Publisher', 'Armen-Jean Andreasian'),
         StringStruct('CompanyName', 'Armen-Jean Andreasian'),
         StringStruct('Copyright', 'Copyright 2025 Armen-Jean Andreasian. All rights reserved.'),
         StringStruct('FileDescription', 'Text Editor'),
