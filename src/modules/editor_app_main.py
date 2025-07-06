@@ -4,6 +4,7 @@ from src.modules.gui.functional import StandAloneFunctions
 from src.modules.file_managment.file_manager import FileManager
 from src.modules.gui.keyboard.hotkeys import KeyboardBindings
 from typing import TYPE_CHECKING
+from src.modules.gui.widgets import CustomTitleBar
 
 if TYPE_CHECKING:
     from src.config.paths import FilePaths
@@ -26,6 +27,9 @@ class TextEditor:
         # defining the settings
         self.root = tk.Tk()
         self.root.title("Nemesis-XT")
+
+
+        self.root.attributes("-alpha", 0.99)
         # self.root.attributes('-transparentcolor', 'white')
         self.root.iconbitmap(default=filepaths_obj.ICON_PNG_FILEPATH)
         self.root.geometry("800x600")  # Set your preferred initial window size
