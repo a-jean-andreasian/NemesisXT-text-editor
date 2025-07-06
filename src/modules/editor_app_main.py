@@ -26,8 +26,10 @@ class TextEditor:
         # defining the settings
         self.root = tk.Tk()
         self.root.title("Nemesis-XT")
+
+        self.root.attributes("-alpha", 0.99)
         # self.root.attributes('-transparentcolor', 'white')
-        self.root.iconbitmap(default=filepaths_obj.ICON_PNG_FILEPATH)
+        self.root.iconbitmap(default=filepaths_obj.ICON_ICON_FILEPATH)
         self.root.geometry("800x600")  # Set your preferred initial window size
 
         # main menu
@@ -80,3 +82,4 @@ class TextEditor:
 
         # exit
         self.root.protocol(name="WM_DELETE_WINDOW", func=file_manager.on_closing)
+
