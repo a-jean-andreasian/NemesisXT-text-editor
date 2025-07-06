@@ -72,7 +72,7 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon="src/assets/logos/window_logo.ico" "app.py"
+          pyinstaller --noconfirm --onefile --windowed --icon="src/assets/logos/window_logo.ico" "nemesis.py"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
